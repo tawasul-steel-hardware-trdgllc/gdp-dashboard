@@ -4,8 +4,8 @@ import json
 import streamlit as st
 import os
 
-openai.api_key =os.environ.get("OPENAI_API_KEY")
-#openai.api_key = st.secrets["OPENAI_API_KEY"]
+#openai.api_key =os.environ.get("OPENAI_API_KEY")
+openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 
 def BasicGeneration(userPrompt):
@@ -69,7 +69,12 @@ if st.button("Get Bitcoin Analysis"):
                         Please be as detailed as possible and explain in a way that a beginner can understand and 
                         here is the price list: {bitcoinPrices}"""
 
-        analysis = BasicGeneration(chatGPTPrompt)
+        
+        try:
+            analysis = BasicGeneration(chatGPTPrompt)
+        except Exception as e:
+            st.exception(e)
+            analysis = "Error — see logs"
         st.text_area(" Analysis", analysis, height=500 )
         st.success('Done!')
 
