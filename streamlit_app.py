@@ -4,8 +4,12 @@ import json
 import streamlit as st
 import os
 
-#openai.api_key =os.environ.get("OPENAI_API_KEY")
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# Safely load API key from Streamlit secrets or environment variable
+api_key = st.secrets.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+if not api_key:
+    st.error("Missing OPENAI_API_KEY — add it in Streamlit Cloud Secrets and restart the app")
+else:
+    openai.api_key = api_key
 
 
 def BasicGeneration(userPrompt):
